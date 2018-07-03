@@ -64,7 +64,7 @@ class MergerTest(unittest.TestCase):
             self.assertEqual(patch(m.unified_patches, lca),
                              expected_value)
 
-    def test_continue_run_multiple_conflicts_per_patch_two(self):
+    def test_continue_run_multiple_conflicts_per_patch_not_in_order(self):
         lca = {'foo': [{'x': 1}, {'y': 2}, {'z': 4}, {'q': 5}]}
         first = {'foo': [{'x': 1}]}
         second = {'bar': 'baz'}

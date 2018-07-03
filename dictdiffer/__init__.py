@@ -17,7 +17,14 @@ import pkg_resources
 
 from ._compat import (PY2, MutableMapping, MutableSequence, MutableSet,
                       string_types, text_type)
-from .utils import EPSILON, PathLimit, are_different, dot_lookup
+from .utils import (
+    EPSILON,
+    PathLimit,
+    RemovedObject,
+    are_different,
+    dot_lookup,
+    strip_removed_objects,
+)
 from .version import __version__
 
 (ADD, REMOVE, CHANGE) = (
@@ -296,6 +303,8 @@ def patch(diff_result, destination, in_place=False):
             dest = dot_lookup(destination, node)
             if isinstance(dest, SET_TYPES):
                 dest -= value
+            elif isinstance(dest, LIST_TYPES):
+                dest[key] = RemovedObject()
             else:
                 del dest[key]
 
@@ -308,7 +317,7 @@ def patch(diff_result, destination, in_place=False):
     for action, node, changes in diff_result:
         patchers[action](node, changes)
 
-    return destination
+    return strip_removed_objects(destination)
 
 
 def swap(diff_result):
