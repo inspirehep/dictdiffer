@@ -324,6 +324,8 @@ def patch(diff_result, destination, in_place=False):
             dest = dot_lookup(destination, node)
             if isinstance(dest, SET_TYPES):
                 dest -= value
+            elif isinstance(dest, LIST_TYPES):
+                dest[key] = RemovedObject()
             else:
                 del dest[key]
 
@@ -336,7 +338,7 @@ def patch(diff_result, destination, in_place=False):
     for action, node, changes in diff_result:
         patchers[action](node, changes)
 
-    return destination
+    return strip_removed_objects(destination)
 
 
 def swap(diff_result):

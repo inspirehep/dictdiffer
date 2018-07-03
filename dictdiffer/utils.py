@@ -17,6 +17,10 @@ num_types = int, float
 EPSILON = sys.float_info.epsilon
 
 
+class RemovedObject(object):
+    """Removed object placeholder."""
+
+
 class WildcardDict(dict):
     """Provide possibility to use special wildcard keys to access values.
 
@@ -279,3 +283,21 @@ def are_different(first, second, tolerance, absolute_tolerance=None):
         )
     # we got different values
     return True
+
+
+def strip_removed_objects(obj):
+    """Strip all the values that are instances of ``RemovedObject``."""
+    if isinstance(obj, LIST_TYPES):
+        return [
+            strip_removed_objects(value)
+            for value in obj if not isinstance(value, RemovedObject)
+        ]
+    if isinstance(obj, DICT_TYPES):
+        new_dict = {}
+        for key, value in obj.items():
+            if isinstance(value, RemovedObject):
+                continue
+            clean_value = strip_removed_objects(value)
+            new_dict[key] = clean_value
+        return new_dict
+    return obj

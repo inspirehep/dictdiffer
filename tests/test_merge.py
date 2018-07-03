@@ -64,6 +64,7 @@ class MergerTest(unittest.TestCase):
             self.assertEqual(patch(m.unified_patches, lca),
                              expected_value)
 
+<<<<<<< HEAD
     def test_run_with_ignore(self):
         lca = {'changeme': 'Jo', 'ignore': 'Something'}
         first = {'changeme': 'Joe', 'ignore': 'Nothing'}
@@ -76,6 +77,9 @@ class MergerTest(unittest.TestCase):
         except UnresolvedConflictsException:
             self.fail('UnresolvedConflictsException should not be raised')
     def test_continue_run_multiple_conflicts_per_patch_two(self):
+=======
+    def test_continue_run_multiple_conflicts_per_patch_not_in_order(self):
+>>>>>>> 91425e0 (patch: fix shifting array on ``remove`` action)
         lca = {'foo': [{'x': 1}, {'y': 2}, {'z': 4}, {'q': 5}]}
         first = {'foo': [{'x': 1}]}
         second = {'bar': 'baz'}
