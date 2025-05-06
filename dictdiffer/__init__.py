@@ -10,7 +10,6 @@
 
 """Dictdiffer is a helper module to diff and patch dictionaries."""
 
-import sys
 from copy import deepcopy
 
 import pkg_resources
