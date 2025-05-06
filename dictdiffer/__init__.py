@@ -12,9 +12,7 @@
 
 from copy import deepcopy
 
-import pkg_resources
-
-from ._compat import (PY2, MutableMapping, MutableSequence, MutableSet,
+from ._compat import (PY2, Iterable, MutableMapping, MutableSequence, MutableSet,
                       string_types, text_type)
 from .utils import (
     EPSILON,

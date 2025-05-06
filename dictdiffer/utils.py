@@ -9,7 +9,6 @@
 
 """Utils gathers helper functions, classes for the dictdiffer module."""
 
-import math
 import sys
 
 from ._compat import (MutableMapping, MutableSequence, izip_longest, num_types,
@@ -279,7 +278,7 @@ def are_different(first, second, tolerance, absolute_tolerance=None):
         return not (first_is_nan and second_is_nan)
     elif isinstance(first, num_types) and isinstance(second, num_types):
         # two numerical values are compared with tolerance
-        return not math.isclose(
+        return not isclose(
             first,
             second,
             rel_tol=tolerance or 0,
@@ -305,3 +304,7 @@ def strip_removed_objects(obj):
             new_dict[key] = clean_value
         return new_dict
     return obj
+
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+    """Verify if two values are close to each other."""
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)

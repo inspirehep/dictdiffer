@@ -24,7 +24,7 @@ if PY2:
                              MutableSet)
     from itertools import izip_longest as _zip_longest
 else:
-    from collections import (Iterable, MutableMapping, MutableSequence,
+    from collections.abc import (Iterable, MutableMapping, MutableSequence,
                              MutableSet)
     from itertools import zip_longest as _zip_longest
 

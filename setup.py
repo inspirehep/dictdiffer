@@ -17,19 +17,21 @@ import re
 
 from setuptools import find_packages, setup
 
-readme = open('README.rst').read()
+readme = "Dictdiffer is a helper module that helps you to diff and patch dictionaries."
+history = open('CHANGES').read()
 
 tests_require = [
-    'pytest-invenio>=1.4.0',
+    'coverage>=4.0',
     'mock>=1.3.0',
-    'tox>=3.7.0',
+    'pydocstyle>=1.0.0',
+    'pytest-cache>=1.0',
+    'pytest-cov==2.6.1',
+    'pytest-pep8>=1.0.6',
+    'pytest~=4.6; python_version == "2.7"',
+    'pytest~=6.0,>=6.2.5; python_version >= "3"'
 ]
 
 extras_require = {
-    'docs': [
-        'Sphinx>=3',
-        'sphinx-rtd-theme>=0.2',
-    ],
     'numpy': [
         'numpy>=1.13.0;python_version<"3.7"',
         'numpy>=1.15.0;python_version<"3.8"',
@@ -45,11 +47,6 @@ for key, reqs in extras_require.items():
         continue
     extras_require['all'].extend(reqs)
 
-setup_requires = [
-    'pytest-runner>=2.7',
-    'setuptools_scm>=3.1.0',
-]
-
 packages = find_packages()
 
 version_template = """\
@@ -62,7 +59,7 @@ __version__ = {version!r}
 """
 
 setup(
-    name='dictdiffer',
+    name='inspire-dictdiffer',
     use_scm_version={
         'local_scheme': 'dirty-tag',
         'write_to': os.path.join('dictdiffer', 'version.py'),
@@ -82,9 +79,7 @@ setup(
     },
     packages=['dictdiffer'],
     zip_safe=False,
-    python_requires='>=3.5',
     extras_require=extras_require,
-    setup_requires=setup_requires,
     tests_require=tests_require,
     classifiers=[
         'Programming Language :: Python :: 2',

@@ -12,7 +12,6 @@
 
 import unittest
 from collections import OrderedDict
-from collections.abc import MutableMapping, MutableSequence
 
 import pytest
 
