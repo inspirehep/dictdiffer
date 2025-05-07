@@ -17,29 +17,21 @@ import re
 
 from setuptools import find_packages, setup
 
-readme = open('README.rst').read()
+readme = "Dictdiffer is a helper module that helps you to diff and patch dictionaries."
 history = open('CHANGES').read()
 
 tests_require = [
-    'check-manifest>=0.25',
     'coverage>=4.0',
-    'isort>=4.2.2',
     'mock>=1.3.0',
     'pydocstyle>=1.0.0',
     'pytest-cache>=1.0',
-    'pytest-cov>=1.8.0',
+    'pytest-cov==2.6.1',
     'pytest-pep8>=1.0.6',
-    'pytest>=2.8.0',
+    'pytest~=4.6; python_version == "2.7"',
+    'pytest~=6.0,>=6.2.5; python_version >= "3"'
 ]
 
 extras_require = {
-    ':python_version=="2.6"': [
-        'unittest2>=1.1.0',
-    ],
-    'docs': [
-        'Sphinx>=1.4.4',
-        'sphinx-rtd-theme>=0.1.9',
-    ],
     'numpy': [
         'numpy>=1.11.0',
     ],
@@ -51,10 +43,6 @@ for key, reqs in extras_require.items():
     if ':' == key[0]:
         continue
     extras_require['all'].extend(reqs)
-
-setup_requires = [
-    'pytest-runner>=2.7',
-]
 
 packages = find_packages()
 
@@ -77,7 +65,6 @@ setup(
     packages=['dictdiffer'],
     zip_safe=False,
     extras_require=extras_require,
-    setup_requires=setup_requires,
     tests_require=tests_require,
     classifiers=[
         'Programming Language :: Python :: 2',
