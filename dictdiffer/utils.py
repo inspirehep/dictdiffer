@@ -12,10 +12,13 @@
 import math
 import sys
 from itertools import zip_longest
+from collections.abc import MutableMapping, MutableSequence
 
 num_types = int, float
 EPSILON = sys.float_info.epsilon
 
+DICT_TYPES = (MutableMapping, )
+LIST_TYPES = (MutableSequence, )
 
 class RemovedObject(object):
     """Removed object placeholder."""
