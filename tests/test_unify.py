@@ -8,20 +8,17 @@
 
 import unittest
 
-from dictdiffer import patch
 from dictdiffer.conflict import Conflict
-from dictdiffer.merge import Merger
 from dictdiffer.unify import Unifier
-from dictdiffer.utils import WildcardDict, nested_hash
+from dictdiffer.utils import nested_hash
 
 
 class TestUnifier(unittest.TestCase):
-
     def test_build_index(self):
         u = Unifier()
 
-        p1 = ('add', 'foo', [(0, 0)])
-        p2 = ('add', 'foo', [(0, 1)])
+        p1 = ("add", "foo", [(0, 0)])
+        p2 = ("add", "foo", [(0, 1)])
         c = Conflict(p1, p2)
 
         u._build_index([c])
@@ -32,10 +29,10 @@ class TestUnifier(unittest.TestCase):
     def test_unify(self):
         u = Unifier()
 
-        p1 = ('add', 'foo', [(0, 0)])
-        p2 = ('add', 'foo', [(0, 1)])
+        p1 = ("add", "foo", [(0, 0)])
+        p2 = ("add", "foo", [(0, 1)])
         c = Conflict(p1, p2)
-        c.take = 'f'
+        c.take = "f"
 
         u.unify([p1], [p2], [c])
 

@@ -11,13 +11,18 @@
 
 import sys
 
-from ._compat import (MutableMapping, MutableSequence, izip_longest, num_types,
-                      string_types)
+from ._compat import (
+    MutableMapping,
+    MutableSequence,
+    izip_longest,
+    num_types,
+    string_types,
+)
 
 EPSILON = sys.float_info.epsilon
 
-DICT_TYPES = (MutableMapping, )
-LIST_TYPES = (MutableSequence, )
+DICT_TYPES = (MutableMapping,)
+LIST_TYPES = (MutableSequence,)
 
 
 class RemovedObject(object):
@@ -78,19 +83,19 @@ class WildcardDict(dict):
             return super(WildcardDict, self).__getitem__(key)
         except KeyError:
             if key[:-1] in self.plus_keys:
-                return super(WildcardDict, self).__getitem__(key[:-1]+('+',))
-            for _key in [key[:-i] for i in range(1, len(key)+1)]:
+                return super(WildcardDict, self).__getitem__(key[:-1] + ("+",))
+            for _key in [key[:-i] for i in range(1, len(key) + 1)]:
                 if _key in self.star_keys:
-                    return super(WildcardDict, self).__getitem__(_key+('*',))
+                    return super(WildcardDict, self).__getitem__(_key + ("*",))
             raise KeyError
 
     def __setitem__(self, key, value):
         """Set the item for a given key (path)."""
         super(WildcardDict, self).__setitem__(key, value)
 
-        if key[-1] == '+':
+        if key[-1] == "+":
             self.plus_keys.add(key[:-1])
-        if key[-1] == '*':
+        if key[-1] == "*":
             self.star_keys.add(key[:-1])
 
     def query_path(self, key):
@@ -103,10 +108,10 @@ class WildcardDict(dict):
         if key in self:
             return key
         if key[:-1] in self.plus_keys:
-            return key[:-1]+('+',)
-        for _key in [key[:-i] for i in range(1, len(key)+1)]:
+            return key[:-1] + ("+",)
+        for _key in [key[:-i] for i in range(1, len(key) + 1)]:
             if _key in self.star_keys:
-                return _key+('*',)
+                return _key + ("*",)
 
         raise KeyError
 
@@ -125,7 +130,7 @@ class PathLimit(object):
             >>> pl.dict
             {'foo': {'bar': {'!@#$%FINAL': True}}}
         """
-        self.final_key = final_key if final_key else '!@#$FINAL'
+        self.final_key = final_key if final_key else "!@#$FINAL"
         self.dict = {}
         for key_path in path_limits:
             containing = self.dict
@@ -151,7 +156,7 @@ class PathLimit(object):
                 containing = containing[key]
             except KeyError:
                 try:
-                    containing = containing['*']
+                    containing = containing["*"]
                 except KeyError:
                     return False
 
@@ -165,19 +170,18 @@ def create_dotted_node(node):
     'foo.bar.baz'
     """
     if all(map(lambda x: isinstance(x, string_types), node)):
-        return '.'.join(node)
+        return ".".join(node)
     else:
         return list(node)
 
 
 def get_path(patch):
     """Return the path for a given dictdiffer.diff patch."""
-    if patch[1] != '':
-        keys = (patch[1].split('.') if isinstance(patch[1], string_types)
-                else patch[1])
+    if patch[1] != "":
+        keys = patch[1].split(".") if isinstance(patch[1], string_types) else patch[1]
     else:
         keys = []
-    keys = keys + [patch[2][0][0]] if patch[0] != 'change' else keys
+    keys = keys + [patch[2][0][0]] if patch[0] != "change" else keys
     return tuple(keys)
 
 
@@ -196,8 +200,7 @@ def is_super_path(path1, path2):
         >>> is_super_path( ('foo', 'bar'), ('foo', 'apple', 'banana') )
         False
     """
-    return all(map(lambda x: x[0] == x[1] or x[0] is None,
-                   izip_longest(path1, path2)))
+    return all(map(lambda x: x[0] == x[1] or x[0] is None, izip_longest(path1, path2)))
 
 
 def nested_hash(obj):
@@ -239,16 +242,16 @@ def dot_lookup(source, lookup, parent=False):
         {'a': {'b': 'hello'}}
 
     """
-    if lookup is None or lookup == '' or lookup == []:
+    if lookup is None or lookup == "" or lookup == []:
         return source
 
     value = source
     if isinstance(lookup, string_types):
-        keys = lookup.split('.')
+        keys = lookup.split(".")
     elif isinstance(lookup, list):
         keys = lookup
     else:
-        raise TypeError('lookup must be string or list')
+        raise TypeError("lookup must be string or list")
 
     if parent:
         keys = keys[:-1]
@@ -276,7 +279,7 @@ def are_different(first, second, tolerance):
     elif isinstance(first, num_types) and isinstance(second, num_types):
         # (a) two numerical values are compared with tolerance
         # (b) both values are NaN and they will never fit the tolerance
-        return abs(first-second) > tolerance * max(abs(first), abs(second))
+        return abs(first - second) > tolerance * max(abs(first), abs(second))
     # we got different values
     return True
 
@@ -286,7 +289,8 @@ def strip_removed_objects(obj):
     if isinstance(obj, LIST_TYPES):
         return [
             strip_removed_objects(value)
-            for value in obj if not isinstance(value, RemovedObject)
+            for value in obj
+            if not isinstance(value, RemovedObject)
         ]
     if isinstance(obj, DICT_TYPES):
         new_dict = {}

@@ -8,14 +8,25 @@
 
 """Python compatibility definitions."""
 
+__all__ = (
+    "PY2",
+    "string_types",
+    "text_type",
+    "num_types",
+    "MutableMapping",
+    "MutableSet",
+    "MutableSequence",
+    "izip_longest",
+)
+
 try:
     PY2 = True
-    string_types = basestring,
+    string_types = (basestring,)
     text_type = unicode
     num_types = int, long, float
 except NameError:
     PY2 = False
-    string_types = str,
+    string_types = (str,)
     text_type = str
     num_types = int, float
 

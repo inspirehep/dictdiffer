@@ -35,9 +35,9 @@ class Merger(object):
         ...     m.continue_run()
     """
 
-    def __init__(self,
-                 lca, first, second, actions,
-                 path_limits=[], additional_info=None):
+    def __init__(
+        self, lca, first, second, actions, path_limits=[], additional_info=None
+    ):
         """Initialize the Merger object.
 
         :param lca: latest common ancestor of the two diverging data structures
@@ -58,8 +58,7 @@ class Merger(object):
 
         self.conflict_finder = ConflictFinder()
 
-        self.resolver = Resolver(self.actions,
-                                 self.additional_info)
+        self.resolver = Resolver(self.actions, self.additional_info)
 
         self.unifier = Unifier()
 
@@ -102,12 +101,12 @@ class Merger(object):
         *second* data structure and stores them in the attributes
         *first_patches* and *second_patches*.
         """
-        self.first_patches = list(diff(self.lca, self.first,
-                                       path_limit=self.path_limit,
-                                       expand=True))
-        self.second_patches = list(diff(self.lca, self.second,
-                                        path_limit=self.path_limit,
-                                        expand=True))
+        self.first_patches = list(
+            diff(self.lca, self.first, path_limit=self.path_limit, expand=True)
+        )
+        self.second_patches = list(
+            diff(self.lca, self.second, path_limit=self.path_limit, expand=True)
+        )
 
     def find_conflicts(self):
         """Find conflicts between the tow lists of patches.
@@ -115,10 +114,9 @@ class Merger(object):
         Finds the conflicts between the two difference lists and stores
         them in the *conflicts* attribute.
         """
-        self.conflicts = (self
-                          .conflict_finder
-                          .find_conflicts(self.first_patches,
-                                          self.second_patches))
+        self.conflicts = self.conflict_finder.find_conflicts(
+            self.first_patches, self.second_patches
+        )
 
     def resolve_conflicts(self):
         """Resolve the conflicts.
@@ -127,9 +125,9 @@ class Merger(object):
         Occurring unresolvable conflicts are stored in *unresolved_conflicts*.
         """
         try:
-            self.resolver.resolve_conflicts(self.first_patches,
-                                            self.second_patches,
-                                            self.conflicts)
+            self.resolver.resolve_conflicts(
+                self.first_patches, self.second_patches, self.conflicts
+            )
         except UnresolvedConflictsException as e:
             self.unresolved_conflicts = e.content
 
@@ -139,6 +137,6 @@ class Merger(object):
         Unifies the patches after a successful merge and stores them in
         *unified_patches*.
         """
-        self.unified_patches = self.unifier.unify(self.first_patches,
-                                                  self.second_patches,
-                                                  self.conflicts)
+        self.unified_patches = self.unifier.unify(
+            self.first_patches, self.second_patches, self.conflicts
+        )

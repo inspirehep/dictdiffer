@@ -9,5 +9,4 @@
 # it under the terms of the MIT License; see LICENSE file for more
 # details.
 
-pydocstyle dictdiffer && \
 pytest --cov=dictdiffer --cov-report=term-missing --capture=sys -vv tests

@@ -14,9 +14,9 @@ from dictdiffer.merge import Merger, UnresolvedConflictsException
 
 class MergerTest(unittest.TestCase):
     def test_run(self):
-        lca = {'changeme': 'Jo'}
-        first = {'changeme': 'Joe'}
-        second = {'changeme': 'John'}
+        lca = {"changeme": "Jo"}
+        first = {"changeme": "Joe"}
+        second = {"changeme": "John"}
 
         m = Merger(lca, first, second, {})
 
@@ -24,13 +24,12 @@ class MergerTest(unittest.TestCase):
 
     def test_continue_run(self):
         def take_first(conflict, _, __, ___):
-            conflict.take = [('f', x) for x
-                             in range(len(conflict.first_patch.patches))]
+            conflict.take = [("f", x) for x in range(len(conflict.first_patch.patches))]
             return True
 
-        lca = {'changeme': 'Jo'}
-        first = {'changeme': 'Joe'}
-        second = {'changeme': 'John'}
+        lca = {"changeme": "Jo"}
+        first = {"changeme": "Joe"}
+        second = {"changeme": "John"}
 
         m = Merger(lca, first, second, {})
 
@@ -39,20 +38,19 @@ class MergerTest(unittest.TestCase):
         except UnresolvedConflictsException:
             pass
 
-        m.continue_run(['f'])
+        m.continue_run(["f"])
 
-        self.assertEqual(m.unified_patches,
-                         [('change', 'changeme', ('Jo', 'Joe'))])
+        self.assertEqual(m.unified_patches, [("change", "changeme", ("Jo", "Joe"))])
 
     def test_continue_run_multiple_conflicts_per_patch(self):
-        lca = {'foo': [{'x': 1}, {'y': 2}]}
-        first = {'foo': [{'x': 1}, {'y': 2}, {'z': 4}]}
-        second = {'bar': 'baz'}
+        lca = {"foo": [{"x": 1}, {"y": 2}]}
+        first = {"foo": [{"x": 1}, {"y": 2}, {"z": 4}]}
+        second = {"bar": "baz"}
 
         expected = {
-            'f': {'foo': [{'x': 1}, {'y': 2}, {'z': 4}],
-                  'bar': 'baz'},
-            's': {'bar': 'baz'}}
+            "f": {"foo": [{"x": 1}, {"y": 2}, {"z": 4}], "bar": "baz"},
+            "s": {"bar": "baz"},
+        }
 
         for resolution, expected_value in expected.items():
             m = Merger(lca, first, second, {})
@@ -61,18 +59,14 @@ class MergerTest(unittest.TestCase):
             except UnresolvedConflictsException as e:
                 m.continue_run([resolution for _ in e.content])
 
-            self.assertEqual(patch(m.unified_patches, lca),
-                             expected_value)
+            self.assertEqual(patch(m.unified_patches, lca), expected_value)
 
     def test_continue_run_multiple_conflicts_per_patch_not_in_order(self):
-        lca = {'foo': [{'x': 1}, {'y': 2}, {'z': 4}, {'q': 5}]}
-        first = {'foo': [{'x': 1}]}
-        second = {'bar': 'baz'}
+        lca = {"foo": [{"x": 1}, {"y": 2}, {"z": 4}, {"q": 5}]}
+        first = {"foo": [{"x": 1}]}
+        second = {"bar": "baz"}
 
-        expected = {
-            'f': {'foo': [{'x': 1}],
-                  'bar': 'baz'},
-            's': {'bar': 'baz'}}
+        expected = {"f": {"foo": [{"x": 1}], "bar": "baz"}, "s": {"bar": "baz"}}
 
         for resolution, expected_value in expected.items():
             m = Merger(lca, first, second, {})
@@ -81,9 +75,8 @@ class MergerTest(unittest.TestCase):
             except UnresolvedConflictsException as e:
                 m.continue_run([resolution for _ in e.content])
 
-            self.assertEqual(patch(m.unified_patches, lca),
-                             expected_value)
+            self.assertEqual(patch(m.unified_patches, lca), expected_value)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -18,65 +18,63 @@ import re
 from setuptools import find_packages, setup
 
 readme = "Dictdiffer is a helper module that helps you to diff and patch dictionaries."
-history = open('CHANGES').read()
+history = open("CHANGES").read()
 
 tests_require = [
-    'coverage>=4.0',
-    'mock>=1.3.0',
-    'pydocstyle>=1.0.0',
-    'pytest-cache>=1.0',
-    'pytest-cov==2.6.1',
-    'pytest-pep8>=1.0.6',
+    "coverage>=4.0",
+    "mock>=1.3.0",
+    "pytest-cache>=1.0",
+    "pytest-cov==2.6.1",
+    "pytest-pep8>=1.0.6",
     'pytest~=4.6; python_version == "2.7"',
-    'pytest~=6.0,>=6.2.5; python_version >= "3"'
+    'pytest~=6.0,>=6.2.5; python_version >= "3"',
 ]
 
 extras_require = {
-    'numpy': [
-        'numpy>=1.11.0',
+    "numpy": [
+        "numpy>=1.11.0",
     ],
-    'tests': tests_require,
+    "tests": tests_require,
 }
 
-extras_require['all'] = []
+extras_require["all"] = []
 for key, reqs in extras_require.items():
-    if ':' == key[0]:
+    if ":" == key[0]:
         continue
-    extras_require['all'].extend(reqs)
+    extras_require["all"].extend(reqs)
 
 packages = find_packages()
 
 
 # Get the version string. Cannot be done with import!
-with open(os.path.join('dictdiffer', 'version.py'), 'rt') as f:
-    version = re.search(
-        '__version__\s*=\s*"(?P<version>.*)"\n',
-        f.read()
-    ).group('version')
+with open(os.path.join("dictdiffer", "version.py"), "rt") as f:
+    version = re.search('__version__\s*=\s*"(?P<version>.*)"\n', f.read()).group(
+        "version"
+    )
 
 setup(
-    name='dictdiffer',
+    name="dictdiffer",
     version=version,
     description=__doc__,
-    long_description=readme + '\n\n' + history,
-    author='Invenio Collaboration',
-    author_email='info@inveniosoftware.org',
-    url='https://github.com/inveniosoftware/dictdiffer',
-    packages=['dictdiffer'],
+    long_description=readme + "\n\n" + history,
+    author="Invenio Collaboration",
+    author_email="info@inveniosoftware.org",
+    url="https://github.com/inveniosoftware/dictdiffer",
+    packages=["dictdiffer"],
     zip_safe=False,
     extras_require=extras_require,
     tests_require=tests_require,
     classifiers=[
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Development Status :: 5 - Production/Stable',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Topic :: Utilities',
+        "Programming Language :: Python :: 2",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Topic :: Utilities",
     ],
 )

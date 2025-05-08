@@ -14,8 +14,16 @@ from copy import deepcopy
 
 import pkg_resources
 
-from ._compat import (PY2, MutableMapping, MutableSequence, MutableSet,
-                      string_types, text_type)
+__all__ = ["PY2", "text_type"]
+
+from ._compat import (
+    PY2,
+    MutableMapping,
+    MutableSequence,
+    MutableSet,
+    string_types,
+    text_type,
+)
 from .utils import (
     EPSILON,
     PathLimit,
@@ -26,17 +34,16 @@ from .utils import (
 )
 from .version import __version__
 
-(ADD, REMOVE, CHANGE) = (
-    'add', 'remove', 'change')
+(ADD, REMOVE, CHANGE) = ("add", "remove", "change")
 
-__all__ = ('diff', 'patch', 'swap', 'revert', 'dot_lookup', '__version__')
+__all__ = ("diff", "patch", "swap", "revert", "dot_lookup", "__version__")
 
-DICT_TYPES = (MutableMapping, )
-LIST_TYPES = (MutableSequence, )
-SET_TYPES = (MutableSet, )
+DICT_TYPES = (MutableMapping,)
+LIST_TYPES = (MutableSequence,)
+SET_TYPES = (MutableSet,)
 
 try:
-    pkg_resources.get_distribution('numpy')
+    pkg_resources.get_distribution("numpy")
 except pkg_resources.DistributionNotFound:  # pragma: no cover
     HAS_NUMPY = False
 else:
@@ -44,11 +51,18 @@ else:
 
     import numpy
 
-    LIST_TYPES += (numpy.ndarray, )
+    LIST_TYPES += (numpy.ndarray,)
 
 
-def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
-         tolerance=EPSILON):
+def diff(
+    first,
+    second,
+    node=None,
+    ignore=None,
+    path_limit=None,
+    expand=False,
+    tolerance=EPSILON,
+):
     """Compare two dictionary/list/set objects, and returns a diff result.
 
     Return an iterator with differences between two objects. The diff items
@@ -126,17 +140,15 @@ def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
 
     if isinstance(ignore, list):
         ignore = {
-            tuple(value) if isinstance(value, list) else value
-            for value in ignore
+            tuple(value) if isinstance(value, list) else value for value in ignore
         }
 
     node = node or []
 
     def dotted(node, default_type=list):
         """Return dotted notation."""
-        if all(map(lambda x: isinstance(x, string_types) and '.' not in x,
-                   node)):
-            return '.'.join(node)
+        if all(map(lambda x: isinstance(x, string_types) and "." not in x, node)):
+            return ".".join(node)
         else:
             return default_type(node)
 
@@ -149,8 +161,8 @@ def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
         def check(key):
             """Test if key in current node should be ignored."""
             return ignore is None or (
-                dotted(node + [key], default_type=tuple) not in ignore and
-                tuple(node + [key]) not in ignore
+                dotted(node + [key], default_type=tuple) not in ignore
+                and tuple(node + [key]) not in ignore
             )
 
         intersection = [k for k in first if k in second and check(k)]
@@ -189,18 +201,22 @@ def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
         for key in intersection:
             # if type is not changed, callees again diff function to compare.
             # otherwise, the change will be handled as `change` flag.
-            if path_limit and path_limit.path_is_limit(node+[key]):
-                yield CHANGE, node+[key], (
-                    deepcopy(first[key]), deepcopy(second[key])
+            if path_limit and path_limit.path_is_limit(node + [key]):
+                yield (
+                    CHANGE,
+                    node + [key],
+                    (deepcopy(first[key]), deepcopy(second[key])),
                 )
             else:
-                recurred = diff(first[key],
-                                second[key],
-                                node=node + [key],
-                                ignore=ignore,
-                                path_limit=path_limit,
-                                expand=expand,
-                                tolerance=tolerance)
+                recurred = diff(
+                    first[key],
+                    second[key],
+                    node=node + [key],
+                    ignore=ignore,
+                    path_limit=path_limit,
+                    expand=expand,
+                    tolerance=tolerance,
+                )
 
                 for diffed in recurred:
                     yield diffed
@@ -210,20 +226,21 @@ def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
                 collect = []
                 collect_recurred = []
                 for key in addition:
-                    if not isinstance(second[key],
-                                      SET_TYPES + LIST_TYPES + DICT_TYPES):
+                    if not isinstance(second[key], SET_TYPES + LIST_TYPES + DICT_TYPES):
                         collect.append((key, deepcopy(second[key])))
-                    elif path_limit.path_is_limit(node+[key]):
+                    elif path_limit.path_is_limit(node + [key]):
                         collect.append((key, deepcopy(second[key])))
                     else:
                         collect.append((key, second[key].__class__()))
-                        recurred = diff(second[key].__class__(),
-                                        second[key],
-                                        node=node+[key],
-                                        ignore=ignore,
-                                        path_limit=path_limit,
-                                        expand=expand,
-                                        tolerance=tolerance)
+                        recurred = diff(
+                            second[key].__class__(),
+                            second[key],
+                            node=node + [key],
+                            ignore=ignore,
+                            path_limit=path_limit,
+                            expand=expand,
+                            tolerance=tolerance,
+                        )
 
                         collect_recurred.append(recurred)
 
@@ -241,20 +258,32 @@ def diff(first, second, node=None, ignore=None, path_limit=None, expand=False,
                     for key in addition:
                         yield ADD, dotted_node, [(key, deepcopy(second[key]))]
                 else:
-                    yield ADD, dotted_node, [
-                        # for additions, return a list that consist with
-                        # two-pair tuples.
-                        (key, deepcopy(second[key])) for key in addition]
+                    yield (
+                        ADD,
+                        dotted_node,
+                        [
+                            # for additions, return a list that consist with
+                            # two-pair tuples.
+                            (key, deepcopy(second[key]))
+                            for key in addition
+                        ],
+                    )
 
         if deletion:
             if expand:
                 for key in deletion:
                     yield REMOVE, dotted_node, [(key, deepcopy(first[key]))]
             else:
-                yield REMOVE, dotted_node, [
-                    # for deletions, return the list of removed keys
-                    # and values.
-                    (key, deepcopy(first[key])) for key in deletion]
+                yield (
+                    REMOVE,
+                    dotted_node,
+                    [
+                        # for deletions, return the list of removed keys
+                        # and values.
+                        (key, deepcopy(first[key]))
+                        for key in deletion
+                    ],
+                )
 
     else:
         # Compare string and numerical types and yield `change` flag.
@@ -289,7 +318,7 @@ def patch(diff_result, destination, in_place=False):
     def change(node, changes):
         dest = dot_lookup(destination, node, parent=True)
         if isinstance(node, string_types):
-            last_node = node.split('.')[-1]
+            last_node = node.split(".")[-1]
         else:
             last_node = node[-1]
         if isinstance(dest, LIST_TYPES):
@@ -307,11 +336,7 @@ def patch(diff_result, destination, in_place=False):
             else:
                 del dest[key]
 
-    patchers = {
-        REMOVE: remove,
-        ADD: add,
-        CHANGE: change
-    }
+    patchers = {REMOVE: remove, ADD: add, CHANGE: change}
 
     for action, node, changes in diff_result:
         patchers[action](node, changes)
@@ -339,6 +364,7 @@ def swap(diff_result):
         ('change', 'a.b.c', ('b', 'a'))
 
     """
+
     def add(node, changes):
         return REMOVE, node, list(reversed(changes))
 
@@ -349,11 +375,7 @@ def swap(diff_result):
         first, second = changes
         return CHANGE, node, (second, first)
 
-    swappers = {
-        REMOVE: remove,
-        ADD: add,
-        CHANGE: change
-    }
+    swappers = {REMOVE: remove, ADD: add, CHANGE: change}
 
     for action, node, change in diff_result:
         yield swappers[action](node, change)
