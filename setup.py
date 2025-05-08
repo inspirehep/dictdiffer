@@ -58,7 +58,7 @@ __version__ = {version!r}
 """
 
 setup(
-    name='dictdiffer',
+    name='inspire-dictdiffer',
     use_scm_version={
         'local_scheme': 'dirty-tag',
         'write_to': os.path.join('dictdiffer', 'version.py'),

@@ -14,13 +14,13 @@ from collections.abc import (Iterable, MutableMapping, MutableSequence,
                              MutableSet)
 from copy import deepcopy
 
-from .utils import EPSILON, PathLimit, are_different, dot_lookup
+from .utils import EPSILON, PathLimit, RemovedObject, are_different, dot_lookup, strip_removed_objects
 from .version import __version__
 
 (ADD, REMOVE, CHANGE) = (
     'add', 'remove', 'change')
 
-__all__ = ('diff', 'patch', 'swap', 'revert', 'dot_lookup', '__version__')
+__all__ = ('diff', 'patch', 'swap', 'revert', 'dot_lookup', '__version__','DICT_TYPES','LIST_TYPES','SET_TYPES')
 
 DICT_TYPES = (MutableMapping, )
 LIST_TYPES = (MutableSequence, )
