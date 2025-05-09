@@ -8,8 +8,8 @@
 
 import unittest
 
-from dictdiffer import patch
-from dictdiffer.merge import Merger, UnresolvedConflictsException
+from inspire_dictdiffer import patch
+from inspire_dictdiffer.merge import Merger, UnresolvedConflictsException
 
 
 class MergerTest(unittest.TestCase):

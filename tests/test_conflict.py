@@ -8,7 +8,7 @@
 
 import unittest
 
-from dictdiffer.conflict import Conflict, ConflictFinder
+from inspire_dictdiffer.conflict import Conflict, ConflictFinder
 
 
 class ConflictTest(unittest.TestCase):
