@@ -49,22 +49,8 @@ for key, reqs in extras_require.items():
 
 packages = find_packages()
 
-version_template = """\
-# -*- coding: utf-8 -*-
-# Do not change the format of this next line. Doing so risks breaking
-# setup.py and docs/conf.py
-\"\"\"Version information for dictdiffer package.\"\"\"
-
-__version__ = {version!r}
-"""
-
 setup(
     name='inspire-dictdiffer',
-    use_scm_version={
-        'local_scheme': 'dirty-tag',
-        'write_to': os.path.join('dictdiffer', 'version.py'),
-        'write_to_template': version_template,
-    },
     description=__doc__,
     long_description=readme,
     author='Invenio Collaboration',
@@ -81,6 +67,7 @@ setup(
     zip_safe=False,
     extras_require=extras_require,
     tests_require=tests_require,
+    version='0.0.1',
     classifiers=[
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
