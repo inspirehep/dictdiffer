@@ -17,6 +17,7 @@ from collections.abc import MutableMapping, MutableSequence
 import pytest
 
 from dictdiffer import HAS_NUMPY, diff, dot_lookup, patch, revert, swap
+from dictdiffer._compat import MutableMapping, MutableSequence, MutableSet
 from dictdiffer.utils import PathLimit
 
 
