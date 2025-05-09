@@ -69,7 +69,7 @@ assert reverted == first
 ```
 
 A tolerance can be used to consider closed values as equal.
-The tolerance parameter only applies for int and float. 
+The tolerance parameter only applies for int and float.
 Let's try with a tolerance of 10% with the values 10 and 10.5:
 ```python
 first = {'a': 10.0}
@@ -78,7 +78,7 @@ result = diff(first, second, tolerance=0.1)
 
 assert list(result) == []
 ```
- 
+
 Now with a tolerance of 1%:
 ```python
 result = diff(first, second, tolerance=0.01)

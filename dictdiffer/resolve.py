@@ -25,10 +25,12 @@ class UnresolvedConflictsException(Exception):
         :param unresolved_conflicts: list of unresolved conflicts.
                                      dictdiffer.conflict.Conflict objects.
         """
-        self.message = ("The unresolved conflicts are stored in the *content* "
-                        "attribute of this exception or in the "
-                        "*unresolved_conflicts* attribute of the "
-                        "dictdiffer.merge.Merger object.")
+        self.message = (
+            "The unresolved conflicts are stored in the *content* "
+            "attribute of this exception or in the "
+            "*unresolved_conflicts* attribute of the "
+            "dictdiffer.merge.Merger object."
+        )
         self.content = unresolved_conflicts
 
     def __repr__(self):
@@ -76,7 +78,7 @@ class Resolver(object):
         same amendment.
         """
         if conflict.first_patch == conflict.second_patch:
-            conflict.take = 'f'
+            conflict.take = "f"
             return True
         return False
 
@@ -95,7 +97,7 @@ class Resolver(object):
         >>> list(r._consecutive_slices([1, 2, 3]))
         [[1, 2, 3], [1, 2], [1]]
         """
-        return (iterable[:i] for i in reversed(range(1, len(iterable)+1)))
+        return (iterable[:i] for i in reversed(range(1, len(iterable) + 1)))
 
     def resolve_conflicts(self, first_patches, second_patches, conflicts):
         """Convert the given conflicts to the actions.
@@ -117,10 +119,9 @@ class Resolver(object):
             # Let's do some cascading here
             for sub_path in self._consecutive_slices(conflict_path):
                 try:
-                    if self.actions[sub_path](conflict,
-                                              first_patches,
-                                              second_patches,
-                                              self.additional_info):
+                    if self.actions[sub_path](
+                        conflict, first_patches, second_patches, self.additional_info
+                    ):
                         break
                 except NoFurtherResolutionException:
                     self.unresolved_conflicts.append(conflict)

@@ -29,12 +29,12 @@ class Conflict(object):
     def take_patch(self):
         """Return the patch determined by the *take* attribute."""
         if self.take:
-            return self.first_patch if self.take == 'f' else self.second_patch
-        raise Exception('Take attribute not set.')
+            return self.first_patch if self.take == "f" else self.second_patch
+        raise Exception("Take attribute not set.")
 
     def __repr__(self):
         """Return string representation."""
-        return 'Conflict({0}, {1})'.format(self.first_patch, self.second_patch)
+        return "Conflict({0}, {1})".format(self.first_patch, self.second_patch)
 
 
 class ConflictFinder(object):
@@ -55,9 +55,9 @@ class ConflictFinder(object):
 
         if path1 == path2:
             return True
-        elif is_super_path(path1, path2) and patch1[0] == 'remove':
+        elif is_super_path(path1, path2) and patch1[0] == "remove":
             return True
-        elif is_super_path(path2, path1) and patch2[0] == 'remove':
+        elif is_super_path(path2, path1) and patch2[0] == "remove":
             return True
 
         return False
@@ -71,9 +71,10 @@ class ConflictFinder(object):
         :param first_patches: List of patch tuples
         :param second_patches: List of patch tuples
         """
-        self.conflicts = [Conflict(patch1, patch2) for patch1, patch2
-                          in itertools.product(first_patches,
-                                               second_patches)
-                          if self._is_conflict(patch1, patch2)]
+        self.conflicts = [
+            Conflict(patch1, patch2)
+            for patch1, patch2 in itertools.product(first_patches, second_patches)
+            if self._is_conflict(patch1, patch2)
+        ]
 
         return self.conflicts
