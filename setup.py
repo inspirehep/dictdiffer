@@ -18,7 +18,6 @@ import re
 from setuptools import find_packages, setup
 
 readme = "Dictdiffer is a helper module that helps you to diff and patch dictionaries."
-history = open('CHANGES').read()
 
 tests_require = [
     'coverage>=4.0',
@@ -56,14 +55,7 @@ setup(
     author='Invenio Collaboration',
     author_email='info@inveniosoftware.org',
     url='https://github.com/inveniosoftware/dictdiffer',
-    project_urls={
-        'Changelog': (
-            'https://github.com/inveniosoftware/dictdiffer'
-            '/blob/master/CHANGES'
-        ),
-        'Docs': 'https://dictdiffer.rtfd.io/',
-    },
-    packages=['dictdiffer'],
+    packages=['inspire_dictdiffer'],
     zip_safe=False,
     extras_require=extras_require,
     tests_require=tests_require,

@@ -8,8 +8,8 @@
 
 import unittest
 
-from dictdiffer.conflict import Conflict
-from dictdiffer.resolve import (NoFurtherResolutionException, Resolver,
+from inspire_dictdiffer.conflict import Conflict
+from inspire_dictdiffer.resolve import (NoFurtherResolutionException, Resolver,
                                 UnresolvedConflictsException)
 
 

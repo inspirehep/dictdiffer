@@ -15,9 +15,9 @@ from collections import OrderedDict
 
 import pytest
 
-from dictdiffer import HAS_NUMPY, diff, dot_lookup, patch, revert, swap
-from dictdiffer._compat import MutableMapping, MutableSequence, MutableSet
-from dictdiffer.utils import PathLimit
+from inspire_dictdiffer import HAS_NUMPY, diff, dot_lookup, patch, revert, swap
+from inspire_dictdiffer._compat import MutableMapping, MutableSequence, MutableSet
+from inspire_dictdiffer.utils import PathLimit
 
 
 class DictDifferTests(unittest.TestCase):

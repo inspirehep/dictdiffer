@@ -8,7 +8,7 @@
 
 import unittest
 
-from dictdiffer.utils import (PathLimit, RemovedObject, WildcardDict,
+from inspire_dictdiffer.utils import (PathLimit, RemovedObject, WildcardDict,
                               create_dotted_node, dot_lookup, get_path,
                               is_super_path, nested_hash,
                               strip_removed_objects)

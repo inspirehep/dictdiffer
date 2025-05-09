@@ -10,7 +10,7 @@ import unittest
 
 import pytest
 
-from dictdiffer.testing import assert_no_diff
+from inspire_dictdiffer.testing import assert_no_diff
 
 
 class AssertNoDiffTest(unittest.TestCase):
