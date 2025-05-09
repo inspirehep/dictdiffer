@@ -9,12 +9,19 @@
 
 """Utils gathers helper functions, classes for the dictdiffer module."""
 
-import math
 import sys
-from itertools import zip_longest
 
-num_types = int, float
+from ._compat import (MutableMapping, MutableSequence, izip_longest, num_types,
+                      string_types)
+
 EPSILON = sys.float_info.epsilon
+
+DICT_TYPES = (MutableMapping, )
+LIST_TYPES = (MutableSequence, )
+
+
+class RemovedObject(object):
+    """Removed object placeholder."""
 
 
 class WildcardDict(dict):
@@ -157,7 +164,7 @@ def create_dotted_node(node):
     >>> create_dotted_node( ['foo', 'bar', 'baz'] )
     'foo.bar.baz'
     """
-    if all(map(lambda x: isinstance(x, str), node)):
+    if all(map(lambda x: isinstance(x, string_types), node)):
         return '.'.join(node)
     else:
         return list(node)
@@ -166,7 +173,7 @@ def create_dotted_node(node):
 def get_path(patch):
     """Return the path for a given dictdiffer.diff patch."""
     if patch[1] != '':
-        keys = (patch[1].split('.') if isinstance(patch[1], str)
+        keys = (patch[1].split('.') if isinstance(patch[1], string_types)
                 else patch[1])
     else:
         keys = []
@@ -190,7 +197,7 @@ def is_super_path(path1, path2):
         False
     """
     return all(map(lambda x: x[0] == x[1] or x[0] is None,
-                   zip_longest(path1, path2)))
+                   izip_longest(path1, path2)))
 
 
 def nested_hash(obj):
@@ -236,7 +243,7 @@ def dot_lookup(source, lookup, parent=False):
         return source
 
     value = source
-    if isinstance(lookup, str):
+    if isinstance(lookup, string_types):
         keys = lookup.split('.')
     elif isinstance(lookup, list):
         keys = lookup
@@ -271,7 +278,7 @@ def are_different(first, second, tolerance, absolute_tolerance=None):
         return not (first_is_nan and second_is_nan)
     elif isinstance(first, num_types) and isinstance(second, num_types):
         # two numerical values are compared with tolerance
-        return not math.isclose(
+        return not isclose(
             first,
             second,
             rel_tol=tolerance or 0,
@@ -279,3 +286,25 @@ def are_different(first, second, tolerance, absolute_tolerance=None):
         )
     # we got different values
     return True
+
+
+def strip_removed_objects(obj):
+    """Strip all the values that are instances of ``RemovedObject``."""
+    if isinstance(obj, LIST_TYPES):
+        return [
+            strip_removed_objects(value)
+            for value in obj if not isinstance(value, RemovedObject)
+        ]
+    if isinstance(obj, DICT_TYPES):
+        new_dict = {}
+        for key, value in obj.items():
+            if isinstance(value, RemovedObject):
+                continue
+            clean_value = strip_removed_objects(value)
+            new_dict[key] = clean_value
+        return new_dict
+    return obj
+
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):
+    """Verify if two values are close to each other."""
+    return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)

@@ -8,8 +8,10 @@
 
 import unittest
 
-from dictdiffer.utils import (PathLimit, WildcardDict, create_dotted_node,
-                              dot_lookup, get_path, is_super_path, nested_hash)
+from dictdiffer.utils import (PathLimit, RemovedObject, WildcardDict,
+                              create_dotted_node, dot_lookup, get_path,
+                              is_super_path, nested_hash,
+                              strip_removed_objects)
 
 
 class UtilsTest(unittest.TestCase):
@@ -144,3 +146,65 @@ class UtilsTest(unittest.TestCase):
         nested_hash((1, 2, 3))
         nested_hash(set([1, 2, 3]))
         nested_hash({'foo': 'bar'})
+
+    def test_strip_removed_objects_list(self):
+        object_list = {
+            'a': [
+                'b',
+                RemovedObject(),
+                'c',
+                'd',
+            ],
+        }
+        expected_object_list = {
+            'a': ['b', 'c', 'd'],
+        }
+        self.assertEqual(strip_removed_objects(
+            object_list), expected_object_list)
+
+    def test_strip_removed_objects_dict(self):
+        object_dict = {
+            'a': {
+              'b': 'c',
+              'd': RemovedObject(),
+            },
+            'e': 'f',
+        }
+        expected_object_dict = {
+            'a': {
+                'b': 'c',
+            },
+            'e': 'f',
+        }
+        self.assertEqual(strip_removed_objects(
+            object_dict), expected_object_dict)
+
+    def test_strip_removed_objects_nested(self):
+        object_nested = {
+            'parent': {
+                'a': {
+                    'b': 'c',
+                    'd': RemovedObject(),
+                },
+                'e': 'f',
+                'g': [
+                    'h',
+                    RemovedObject(),
+                    'i',
+                    'k',
+                ],
+            }
+        }
+        expected_object_nested = {
+            'parent': {
+                'a': {
+                    'b': 'c',
+                },
+                'e': 'f',
+                'g': [
+                    'h', 'i', 'k',
+                ],
+            },
+        }
+        self.assertEqual(strip_removed_objects(
+            object_nested), expected_object_nested)
