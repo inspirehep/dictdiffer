@@ -8,24 +8,24 @@
 
 """Python compatibility definitions."""
 
+__all__ = ("Iterable", "MutableMapping", "MutableSequence", "MutableSet")
+
 try:
     PY2 = True
-    string_types = basestring,
+    string_types = (basestring,)
     text_type = unicode
     num_types = int, long, float
 except NameError:
     PY2 = False
-    string_types = str,
+    string_types = (str,)
     text_type = str
     num_types = int, float
 
 if PY2:
-    from collections import (Iterable, MutableMapping, MutableSequence,
-                             MutableSet)
+    from collections import Iterable, MutableMapping, MutableSequence, MutableSet
     from itertools import izip_longest as _zip_longest
 else:
-    from collections.abc import (Iterable, MutableMapping, MutableSequence,
-                             MutableSet)
+    from collections.abc import Iterable, MutableMapping, MutableSequence, MutableSet
     from itertools import zip_longest as _zip_longest
 
 izip_longest = _zip_longest
