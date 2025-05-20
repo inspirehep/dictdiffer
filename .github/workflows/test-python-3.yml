@@ -31,4 +31,4 @@ jobs:
 
     - name: Run tests
       run: |
-          ./run-tests.sh
+          pytest --capture=sys -vv tests
