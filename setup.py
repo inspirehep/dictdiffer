@@ -49,7 +49,7 @@ setup(
     zip_safe=False,
     extras_require=extras_require,
     tests_require=tests_require,
-    version="0.0.4",
+    version="0.0.5",
     classifiers=[
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 2.7",
