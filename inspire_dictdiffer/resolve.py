@@ -52,7 +52,7 @@ class NoFurtherResolutionException(Exception):
     pass
 
 
-class Resolver(object):
+class Resolver:
     """Class handling the conflict resolution process.
 
     Presents the given conflicts to actions designed to solve them.

@@ -16,7 +16,7 @@ from .unify import Unifier
 from .utils import PathLimit
 
 
-class Merger(object):
+class Merger:
     """Class wrapping steps of the automated merging process.
 
     Usage:
