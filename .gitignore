@@ -21,3 +21,5 @@ docs/_build
 docs/db
 docs/static
 htmlcov
+
+.venv/

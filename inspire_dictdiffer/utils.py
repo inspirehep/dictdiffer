@@ -11,13 +11,8 @@
 
 import sys
 
-from ._compat import (
-    MutableMapping,
-    MutableSequence,
-    izip_longest,
-    num_types,
-    string_types,
-)
+from collections.abc import MutableMapping, MutableSequence
+from itertools import zip_longest
 
 EPSILON = sys.float_info.epsilon
 
@@ -169,7 +164,7 @@ def create_dotted_node(node):
     >>> create_dotted_node( ['foo', 'bar', 'baz'] )
     'foo.bar.baz'
     """
-    if all(map(lambda x: isinstance(x, string_types), node)):
+    if all(map(lambda x: isinstance(x, str), node)):
         return ".".join(node)
     else:
         return list(node)
@@ -178,7 +173,7 @@ def create_dotted_node(node):
 def get_path(patch):
     """Return the path for a given dictdiffer.diff patch."""
     if patch[1] != "":
-        keys = patch[1].split(".") if isinstance(patch[1], string_types) else patch[1]
+        keys = patch[1].split(".") if isinstance(patch[1], str) else patch[1]
     else:
         keys = []
     keys = keys + [patch[2][0][0]] if patch[0] != "change" else keys
@@ -200,7 +195,7 @@ def is_super_path(path1, path2):
         >>> is_super_path( ('foo', 'bar'), ('foo', 'apple', 'banana') )
         False
     """
-    return all(map(lambda x: x[0] == x[1] or x[0] is None, izip_longest(path1, path2)))
+    return all(map(lambda x: x[0] == x[1] or x[0] is None, zip_longest(path1, path2)))
 
 
 def nested_hash(obj):
@@ -246,7 +241,7 @@ def dot_lookup(source, lookup, parent=False):
         return source
 
     value = source
-    if isinstance(lookup, string_types):
+    if isinstance(lookup, str):
         keys = lookup.split(".")
     elif isinstance(lookup, list):
         keys = lookup
@@ -279,7 +274,7 @@ def are_different(first, second, tolerance, absolute_tolerance=None):
     if first_is_nan or second_is_nan:
         # two 'NaN' values are not different (see issue #114)
         return not (first_is_nan and second_is_nan)
-    elif isinstance(first, num_types) and isinstance(second, num_types):
+    elif isinstance(first, (int, float)) and isinstance(second, (int, float)):
         # two numerical values are compared with tolerance
         return not isclose(
             first,

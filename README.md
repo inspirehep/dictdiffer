@@ -3,7 +3,9 @@
 Dictdiffer is a helper module that helps you to diff and patch dictionaries.
 
 ## Installation
- Install using pip
+Requires Python 3.11 or newer.
+
+Install using pip
  ```bash
 pip install git+https://github.com/inspirehep/dictdiffer.git
 ```
@@ -12,7 +14,7 @@ pip install git+https://github.com/inspirehep/dictdiffer.git
 Let's start with an example on how to find the diff between two dictionaries using :func:`.diff` method:
 
 ```python
-from dictdiffer import diff, patch, swap, revert
+from inspire_dictdiffer import diff, patch, swap, revert
 
 first = {
 	"title": "hello",
@@ -88,5 +90,6 @@ assert list(result) == ('change', 'a', (10.0, 10.5))
 ## Testing
 Running the test suite is as simple as:
 ```bash
-./run-tests.sh
+poetry install --with dev --extras numpy
+poetry run pytest
 ```
