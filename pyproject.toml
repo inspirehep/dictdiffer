@@ -1,6 +1,6 @@
 [project]
 name = "inspire-dictdiffer"
-version = "0.0.6"
+version = "0.0.7"
 description = "Dictdiffer is a library that helps you to diff and patch dictionaries."
 authors = [{ name = "Invenio Collaboration", email = "info@inveniosoftware.org" }]
 license = "MIT"
