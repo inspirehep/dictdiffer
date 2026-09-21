@@ -11,7 +11,7 @@
 from .utils import get_path, nested_hash
 
 
-class Unifier(object):
+class Unifier:
     """Class handling the unification process after the merge."""
 
     def unify(self, first_patches, second_patches, conflicts):

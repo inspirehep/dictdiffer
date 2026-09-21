@@ -13,7 +13,7 @@ import itertools
 from .utils import get_path, is_super_path
 
 
-class Conflict(object):
+class Conflict:
     """Wrapper class to store and handle two conflicting patches."""
 
     def __init__(self, patch1, patch2):
@@ -37,7 +37,7 @@ class Conflict(object):
         return "Conflict({0}, {1})".format(self.first_patch, self.second_patch)
 
 
-class ConflictFinder(object):
+class ConflictFinder:
     """Responsible for finding conflicting patches."""
 
     def _is_conflict(self, patch1, patch2):
